@@ -12,3 +12,20 @@ DOMAIN=www.example.com
 SRC=/usr/local/src
 WEBROOT=/var/www/simplemachines
 
+# unpack and set permissions
+mkdir -p $WEBROOT
+tar -zxf $SRC/smf_*_install.tar.gz -C $WEBROOT
+rm $SRC/smf_*_install.tar.gz
+chown -R root:root $WEBROOT
+chown -R www-data:www-data $WEBROOT/cache
+chown -R www-data:www-data $WEBROOT/Themes
+chown -R www-data:www-data $WEBROOT/Smileys
+chown -R www-data:www-data $WEBROOT/avatars
+chown -R www-data:www-data $WEBROOT/Packages
+chown -R www-data:www-data $WEBROOT/attachments
+chown www-data:www-data $WEBROOT/agreement.txt
+chown www-data:www-data $WEBROOT/Settings.php
+chown www-data:www-data $WEBROOT/Settings_bak.php
+chmod 640 $WEBROOT/Settings.php
+chmod 640 $WEBROOT/Settings_bak.php
+
