@@ -36,6 +36,7 @@ a2enmod rewrite
 
 # start services
 /etc/init.d/mysql start
+/etc/init.d/apache2 start
 
 # setup the database
 MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
@@ -44,6 +45,21 @@ MYSQL_ADMIN="mysqladmin --user=root --password=$MYSQL_PASS"
 $MYSQL_ADMIN create $DB_NAME
 $MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost identified by '$DB_PASS'; flush privileges;"
 
+# curl based install
+EMAIL=$(echo $ADMIN_MAIL | sed s/@/%40/)
+URL="http://127.0.0.1/install.php"
+CURL="curl -c /tmp/cookie -b /tmp/cookie"
+
+$CURL "${URL}?step=0" --data "contbutt=Continue"
+$CURL "${URL}?step=2" --data "db_type=mysql&db_server=localhost&db_user=$DB_USER&db_passwd=$DB_PASS&db_name=$DB_NAME&db_prefix=&contbutt=Continue"
+$CURL "${URL}?step=3" --data "mbname=TurnKey+SimpleMachines&boardurl=http%3A%2F%2F$DOMAIN&dbsession=on&utf8=on&contbutt=Continue"
+$CURL "${URL}?step=4" --data "pop_done=1&contbutt=Continue"
+$CURL "${URL}?step=5" --data "username=$ADMIN_NAME&password1=$ADMIN_PASS&password2=$ADMIN_PASS&email=$EMAIL&password3=$DB_PASS&contbutt=Continue"
+
+rm $WEBROOT/install*
+rm -f /tmp/cookie
+
 # stop services
 /etc/init.d/mysql stop
+/etc/init.d/apache2 stop
 
