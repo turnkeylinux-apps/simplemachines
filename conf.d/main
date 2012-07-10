@@ -29,3 +29,8 @@ chown www-data:www-data $WEBROOT/Settings_bak.php
 chmod 640 $WEBROOT/Settings.php
 chmod 640 $WEBROOT/Settings_bak.php
 
+# configure apache
+a2dissite default
+a2ensite simplemachines
+a2enmod rewrite
+
