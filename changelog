@@ -1,3 +1,16 @@
+turnkey-simplemachines-14.0 (1) turnkey; urgency=low
+
+  * Upgraded to latest major version of SimpleMachines.
+
+  * Upstream source component versions:
+
+    simplemachines           2-0-10
+
+  * Note: Please refer to turnkey-core's changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Jeremy Davis <jeremy@turnkeylinux.org>  Sat, 19 Jun 2015 23:59:08 +1000
+
 turnkey-simplemachines-13.0 (1) turnkey; urgency=low
 
   * PHPMyAdmin:
