@@ -15,7 +15,7 @@ and on top of that:
    - Installed from upstream source code to /var/www/simplemachines
 
 - SSL support out of the box.
-- `PHPMyAdmin`_ administration frontend for MySQL (listening on port
+- `Adminer`_ administration frontend for MySQL (listening on port
   12322 - uses SSL).
 - Postfix MTA (bound to localhost) to allow sending of email (e.g.,
   password recovery).
@@ -30,4 +30,4 @@ Credentials *(passwords set at first boot)*
 
 .. _SimpleMachines: http://www.simplemachines.org/
 .. _TurnKey Core: http://www.turnkeylinux.org/core
-.. _PHPMyAdmin: http://www.phpmyadmin.net
+.. _Adminer: http://www.adminer.org/
