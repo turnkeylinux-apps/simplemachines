@@ -10,6 +10,7 @@ Option:
 
 import sys
 import getopt
+import inithooks_cache
 import hashlib
 
 from dialog_wrapper import Dialog
@@ -59,6 +60,8 @@ def main():
             "SimpleMachines Email",
             "Enter email address for the SMF 'admin' account.",
             "admin@example.com")
+
+    inithooks_cache.write('APP_EMAIL', email)
 
     if not domain:
         if 'd' not in locals():
