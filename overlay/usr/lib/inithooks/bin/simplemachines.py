@@ -11,6 +11,7 @@ Option:
 import sys
 import getopt
 import inithooks_cache
+
 import hashlib
 
 from dialog_wrapper import Dialog
@@ -74,6 +75,8 @@ def main():
 
     if domain == "DEFAULT":
         domain = DEFAULT_DOMAIN
+
+    inithooks_cache.write('APP_DOMAIN', domain)
 
     hash = hashlib.sha1('admin' + password).hexdigest()
 
