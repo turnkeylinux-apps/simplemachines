@@ -6,7 +6,7 @@ dl() {
 }
 
 VERSION="2-0-15"
-URL="http://download.simplemachines.org/index.php/smf_${VERSION}_install.tar.gz"
+URL="https://download.simplemachines.org/index.php/smf_${VERSION}_install.tar.gz"
 
 dl $URL /usr/local/src
 
