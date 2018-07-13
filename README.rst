@@ -14,6 +14,9 @@ and on top of that:
    
    - Installed from upstream source code to /var/www/simplemachines
 
+     **Security note**: Updates to SimpleMachines may require supervision so
+     they **ARE NOT** configured to install automatically.
+
 - SSL support out of the box.
 - `Adminer`_ administration frontend for MySQL (listening on port
   12322 - uses SSL).
