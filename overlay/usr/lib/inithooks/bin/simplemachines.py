@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Set SimpleMachines admin password, email and domain to serve
 
 Option:
@@ -16,13 +16,13 @@ import hashlib
 
 from dialog_wrapper import Dialog
 from mysqlconf import MySQL
-from executil import system
+import subprocess
 
 def usage(s=None):
     if s:
-        print >> sys.stderr, "Error:", s
-    print >> sys.stderr, "Syntax: %s [options]" % sys.argv[0]
-    print >> sys.stderr, __doc__
+        print("Error:", s, file=sys.stderr)
+    print("Syntax: %s [options]" % sys.argv[0], file=sys.stderr)
+    print(__doc__, file=sys.stderr)
     sys.exit(1)
 
 DEFAULT_DOMAIN="www.example.com"
@@ -31,7 +31,7 @@ def main():
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:], "h",
                                        ['help', 'pass=', 'email=', 'domain='])
-    except getopt.GetoptError, e:
+    except getopt.GetoptError as e:
         usage(e)
 
     email = ""
@@ -78,23 +78,23 @@ def main():
 
     inithooks_cache.write('APP_DOMAIN', domain)
 
-    hash = hashlib.sha1('admin' + password).hexdigest()
+    hash = hashlib.sha1(('admin' + password).encode('utf8')).hexdigest()
 
     m = MySQL()
-    m.execute('UPDATE simplemachines.members SET passwd=\"%s\" WHERE member_name=\"admin\";' % hash)
-    m.execute('UPDATE simplemachines.members SET email_address=\"%s\" WHERE member_name=\"admin\";' % email)
+    m.execute('UPDATE simplemachines.members SET passwd=%s WHERE member_name=\"admin\";', (hash,))
+    m.execute('UPDATE simplemachines.members SET email_address=%s WHERE member_name=\"admin\";', (email,))
 
-    m.execute('UPDATE simplemachines.settings SET value=\"http://%s/Smileys\" WHERE variable=\"smileys_url\";' % domain)
-    m.execute('UPDATE simplemachines.settings SET value=\"http://%s/avatars\" WHERE variable=\"avatar_url\";' % domain)
+    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"smileys_url\";', (f"http://{domain}/Smileys"))
+    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"avatar_url\";', (f"http://{domain}/avatars",))
     
-    m.execute('UPDATE simplemachines.themes SET value=\"http://%s/Themes/default\" WHERE variable=\"theme_url\" AND id_theme=1;' % domain)
-    m.execute('UPDATE simplemachines.themes SET value=\"http://%s/Themes/default/images\" WHERE variable=\"images_url\" AND id_theme=1;' % domain)
-    m.execute('UPDATE simplemachines.themes SET value=\"http://%s/Themes/core\" WHERE variable=\"theme_url\" AND id_theme=2;' % domain)
-    m.execute('UPDATE simplemachines.themes SET value=\"http://%s/Themes/core/images\" WHERE variable=\"images_url\" AND id_theme=2;' % domain)
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=1;', (f"http://{domain}/Themes/default",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=1;', (f"http://{domain}/Themes/default/images",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=2;', (f"http://{domain}/Themes/core",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=2;', (f"http://{domain}/Themes/core/images",))
 
     config = "/var/www/simplemachines/Settings.php"
-    system("sed -i \"s|boardurl.*|boardurl = 'http://%s';|\" %s" % (domain, config))
-    system("sed -i \"s|webmaster_email.*|webmaster_email = '%s';|\" %s" % (email, config))
+    subprocess.run(["sed", "-i", f"s|boardurl.*|boardurl = 'http://{domain}';|", config])
+    subprocess.run(["sed", "-i", f"s|webmaster_email.*|webmaster_email = '{domain}';|", config])
 
 
 if __name__ == "__main__":
