@@ -1,3 +1,12 @@
+turnkey-simplemachines-17.0 (1) turnkey; urgency=low
+
+  * Updated to latest upstream version of SimpleMachines - 2.1.2.
+  
+  * Note: Please refer to turnkey-core's 17.0 changelog for changes common to all
+    applications. Here we only describe changes specific to this appliance.
+    
+ -- Mira Heichenko <mira@turnkeylinux.org> 	Tue, 31 May 2022 23:34:23 +0000
+
 turnkey-simplemachines-16.1 (1) turnkey; urgency=low
 
   * Updated to latest upstream version of SimpleMachines - 2.0.18.
