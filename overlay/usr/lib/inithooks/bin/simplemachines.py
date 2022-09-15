@@ -10,13 +10,14 @@ Option:
 
 import sys
 import getopt
-from libinithooks import inithooks_cache
+import subprocess
 
 import hashlib
 
+from libinithooks import inithooks_cache
 from libinithooks.dialog_wrapper import Dialog
 from mysqlconf import MySQL
-import subprocess
+
 
 def usage(s=None):
     if s:
