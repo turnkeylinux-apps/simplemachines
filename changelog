@@ -2,6 +2,8 @@ turnkey-simplemachines-17.0 (1) turnkey; urgency=low
 
   * Update SimpleMachines and its dependencies to v17.
 
+  * Update appliance and curl install to new smp v2.1.2.
+
   * Update libinit hooks cache and dialog_wrapper imports for refactoring in v17.
 
   * Note: Please refer to turnkey-core's 17.0 changelog for changes common to all
