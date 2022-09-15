@@ -4,6 +4,6 @@
 php-gd
 php-cli
 php-curl
+php-mbstring
 
 unzip
-
