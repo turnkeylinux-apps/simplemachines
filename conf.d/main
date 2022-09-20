@@ -54,7 +54,7 @@ $CURL "${URL}?step=0" --data "contbutt=Continue"
 $CURL "${URL}?step=2" --data "db_type=mysql&db_server=localhost&db_user=$DB_USER&db_passwd=$DB_PASS&db_name=$DB_NAME&db_prefix=&contbutt=Continue"
 $CURL "${URL}?step=3" --data "mbname=TurnKey+SimpleMachines&boardurl=http%3A%2F%2F$DOMAIN&dbsession=on&utf8=on&contbutt=Continue"
 $CURL "${URL}?step=4" --data "pop_done=1&contbutt=Continue"
-$CURL "${URL}?step=5" --data "username=$ADMIN_NAME&password1=$ADMIN_PASS&password2=$ADMIN_PASS&email=$EMAIL&password3=$DB_PASS&contbutt=Continue"
+$CURL "${URL}?step=5" --data "username=$ADMIN_NAME&password1=$ADMIN_PASS&password2=$ADMIN_PASS&email=$EMAIL&server_email=$EMAIL&password3=$DB_PASS&contbutt=Continue"
 
 rm $WEBROOT/install*
 rm -f /tmp/cookie
