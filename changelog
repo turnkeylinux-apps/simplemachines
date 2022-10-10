@@ -1,3 +1,13 @@
+turnkey-simplemachines-17.1 (1) turnkey; urgency=low
+
+  * Updated all Debian packages to latest.
+    [ autopatched by buildtasks ]
+
+  * Patched bugfix release. Closes #1734.
+    [ autopatched by buildtasks ]
+
+ -- Jeremy Davis <jeremy@turnkeylinux.org>  Tue, 20 Sep 2022 20:16:16 +0000
+
 turnkey-simplemachines-17.0 (1) turnkey; urgency=low
 
   * Update SimpleMachines and its dependencies to v17.
