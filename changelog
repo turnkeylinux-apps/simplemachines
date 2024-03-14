@@ -3,6 +3,8 @@ turnkey-simplemachines-18.0 (1) turnkey; urgency=low
   * Updated to latest upstream version of SimpleMachines - 2.1.4.
     [Anton Pyrogovskyi <anton@turnkeylinux.org>]
 
+  * DEV: Auto download latest version.
+
   * Confconsole: bugfix broken DNS-01 Let's Encrypt challenge- closes #1876 &
     #1895.
     [Jeremy Davis <jeremy@turnkeylinux.org>]
@@ -94,7 +96,7 @@ turnkey-simplemachines-18.0 (1) turnkey; urgency=low
 
   * Use MariaDB (MySQL replacement) v10.11.3 (from debian repos).
 
- -- Jeremy Davis <jeremy@turnkeylinux.org>  Wed, 13 Mar 2024 07:45:28 +0000
+ -- Jeremy Davis <jeremy@turnkeylinux.org>  Thu, 14 Mar 2024 00:04:14 +0000
 
 turnkey-simplemachines-17.1 (1) turnkey; urgency=low
 
