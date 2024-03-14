@@ -1,12 +1,18 @@
 #!/bin/bash -ex
 
 dl() {
-    [ "$FAB_HTTP_PROXY" ] && PROXY="--proxy $FAB_HTTP_PROXY"
-    cd $2; curl -L -f -O $PROXY $1; cd -
+    [[ "$FAB_HTTP_PROXY" ]] && PROXY="--proxy $FAB_HTTP_PROXY"
+    cd $2
+    curl -L -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0' \
+         -f -O $PROXY $1
+    cd -
 }
 
-VERSION="2-1-4"
+VERSION=$(gh_releases SimpleMachines/SMF | sort -V \
+            | grep -v alpha | grep -v beta | grep -v rc | tail -1)
+VERSION=${VERSION#v}
+VERSION=${VERSION//./-}
+
 URL="https://download.simplemachines.org/index.php/smf_${VERSION}_install.tar.gz"
 
 dl $URL /usr/local/src
-
