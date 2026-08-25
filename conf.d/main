@@ -16,9 +16,10 @@ VERSION=2.1.7
 # unpack and set permissions
 mkdir -p $WEBROOT
 tar -zxf "$SRC/smf-$VERSION.tar.gz" --strip-components=1 -C $WEBROOT
+patch --directory=$WEBROOT --strip=1 < $SRC/375bcd1.patch
 mv $WEBROOT/other/install.php $WEBROOT/
 mv $WEBROOT/other/install_2-1_mysql.sql $WEBROOT/
-rm "$SRC/smf-$VERSION.tar.gz"
+rm "$SRC/smf-$VERSION.tar.gz" $SRC/375bcd1.patch
 touch $WEBROOT/Settings.php $WEBROOT/Settings_bak.php
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/cache

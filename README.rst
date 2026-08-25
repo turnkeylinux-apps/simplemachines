@@ -13,7 +13,8 @@ and on top of that:
 - SimpleMachines configurations:
    
    - Simple Machines Forum 2.1.7 is installed from a pinned and verified
-     official upstream source archive to /var/www/simplemachines.
+     official upstream source archive to /var/www/simplemachines. It includes
+     the official upstream session-login correction merged for SMF 2.1.8.
 
      **Security note**: Updates to SimpleMachines may require supervision so
      they **ARE NOT** configured to install automatically.

@@ -120,13 +120,13 @@ remaining=$(mysql --batch --skip-column-names simplemachines --execute \
 [[ "$remaining" == 0 ]] || die "fixture board remained after cleanup"
 
 {
-    echo 'package_source=github.com/SimpleMachines/SMF tag v2.1.7'
+    echo 'package_source=github.com/SimpleMachines/SMF tag v2.1.7 plus upstream login fix 375bcd1'
     echo 'installed_version=2.1.7'
     echo 'runtime_checks=services,https,admin-login,board-topic-create-read,database,cleanup'
     echo 'updater_command=simplemachines-update --check'
     echo "updater_result=$updater_status"
     echo 'updater_channel=github.com/SimpleMachines/SMF stable releases'
-    echo 'integrity_evidence=sha256:2c9c0ea7df803ee03ff7755ea3651c680952e264b7c572439902bb18245c06a3'
+    echo 'integrity_evidence=source-sha256:2c9c0ea7df803ee03ff7755ea3651c680952e264b7c572439902bb18245c06a3,patch-sha256:2641f0fce520d4c2360e40a43498ffa4ce36dceb8fb890503c6073b854b4daec'
 } > "$TKL_TEST_RESULT"
 
 echo "Simple Machines v19 acceptance: PASS"

@@ -4,6 +4,8 @@ turnkey-simplemachines-19.0 (1) turnkey; urgency=low
 
   * Pin and verify the official upstream source archive during the build.
 
+  * Apply the official upstream fresh-session login correction for SMF 2.1.7.
+
   * Add a supervised release discovery command for application updates.
 
   * Update database provisioning for current MariaDB syntax.
