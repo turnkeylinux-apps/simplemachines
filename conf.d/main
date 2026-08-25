@@ -47,6 +47,8 @@ service apache2 start
 MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
 MYSQL_ADMIN="mysqladmin --user=root --password=$MYSQL_PASS"
 
+# Do not expose generated database credentials in build logs.
+set +x
 $MYSQL_ADMIN create $DB_NAME
 $MYSQL_BATCH --execute "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;"
 
@@ -63,6 +65,7 @@ $CURL "${URL}?step=5" --data "username=$ADMIN_NAME&password1=$ADMIN_PASS&passwor
 
 rm $WEBROOT/install*
 rm -f /tmp/cookie
+set -x
 
 # stop services
 service mysql stop
