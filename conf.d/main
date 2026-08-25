@@ -11,16 +11,21 @@ DOMAIN=www.example.com
 
 SRC=/usr/local/src
 WEBROOT=/var/www/simplemachines
+VERSION=2.1.7
 
 # unpack and set permissions
 mkdir -p $WEBROOT
-tar -zxf $SRC/smf_*_install.tar.gz -C $WEBROOT
-rm $SRC/smf_*_install.tar.gz
+tar -zxf "$SRC/smf-$VERSION.tar.gz" --strip-components=1 -C $WEBROOT
+mv $WEBROOT/other/install.php $WEBROOT/
+mv $WEBROOT/other/install_2-1_mysql.sql $WEBROOT/
+rm "$SRC/smf-$VERSION.tar.gz"
+touch $WEBROOT/Settings.php $WEBROOT/Settings_bak.php
 chown -R root:root $WEBROOT
 chown -R www-data:www-data $WEBROOT/cache
 chown -R www-data:www-data $WEBROOT/Themes
 chown -R www-data:www-data $WEBROOT/Smileys
 chown -R www-data:www-data $WEBROOT/avatars
+chown -R www-data:www-data $WEBROOT/custom_avatar
 chown -R www-data:www-data $WEBROOT/Packages
 chown -R www-data:www-data $WEBROOT/attachments
 chown www-data:www-data $WEBROOT/agreement.txt
@@ -43,7 +48,7 @@ MYSQL_BATCH="mysql --user=root --password=$MYSQL_PASS --batch"
 MYSQL_ADMIN="mysqladmin --user=root --password=$MYSQL_PASS"
 
 $MYSQL_ADMIN create $DB_NAME
-$MYSQL_BATCH --execute "grant all privileges on $DB_NAME.* to $DB_USER@localhost identified by '$DB_PASS'; flush privileges;"
+$MYSQL_BATCH --execute "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;"
 
 # curl based install
 EMAIL=$(echo $ADMIN_MAIL | sed s/@/%40/)

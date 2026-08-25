@@ -1,0 +1,42 @@
+#!/bin/bash -e
+
+usage() {
+    echo "Usage: simplemachines-update --check" >&2
+    exit 2
+}
+
+[[ "${1:-}" == "--check" && "$#" -eq 1 ]] || usage
+
+index=/var/www/simplemachines/index.php
+installed=$(sed -n "s/^define('SMF_VERSION', '\([^']*\)').*/\1/p" "$index")
+[[ "$installed" =~ ^2\.1\.[0-9]+$ ]] || {
+    echo "Unable to determine the installed Simple Machines version" >&2
+    exit 1
+}
+
+release=$(curl --fail --location --silent --show-error \
+    https://api.github.com/repos/SimpleMachines/SMF/releases/latest)
+readarray -t metadata < <(python3 -c '
+import json, sys
+release = json.load(sys.stdin)
+if release.get("draft") or release.get("prerelease"):
+    raise SystemExit("latest GitHub release is not stable")
+tag = release.get("tag_name", "")
+url = release.get("html_url", "")
+if not tag.startswith("v2.1.") or not url.startswith("https://github.com/SimpleMachines/SMF/releases/tag/"):
+    raise SystemExit("unexpected GitHub release metadata")
+print(tag[1:])
+print(url)
+' <<<"$release")
+
+latest=${metadata[0]}
+release_url=${metadata[1]}
+status=current
+if dpkg --compare-versions "$latest" gt "$installed"; then
+    status=update-available
+fi
+
+echo "installed=$installed"
+echo "latest=$latest"
+echo "status=$status"
+echo "release=$release_url"
