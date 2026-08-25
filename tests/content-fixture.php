@@ -12,10 +12,20 @@ $_SERVER['SERVER_NAME'] = 'localhost';
 $_SERVER['SERVER_PORT'] = '443';
 $_SERVER['REQUEST_METHOD'] = 'GET';
 $_SERVER['REQUEST_URI'] = '/index.php';
+$_SERVER['REQUEST_URL'] = '/index.php';
+$_SERVER['QUERY_STRING'] = '';
+$_SERVER['HTTP_HOST'] = 'localhost';
+$_SERVER['HTTP_USER_AGENT'] = 'TurnKey-SMF-Acceptance/1.0';
+$_SERVER['HTTPS'] = 'on';
+$_SERVER['is_cli'] = true;
 $_SERVER['SCRIPT_NAME'] = '/index.php';
 $_SERVER['PHP_SELF'] = '/index.php';
 
 require_once 'SSI.php';
+$ssi_on_error_method = function () use (&$context) {
+    fwrite(STDERR, "Simple Machines API error: " . strip_tags($context['error_message']) . "\n");
+    exit(1);
+};
 
 if ($argv[1] === 'create') {
     if ($argc !== 3 || !preg_match('/^[a-z0-9-]+$/', $argv[2])) {
@@ -37,6 +47,23 @@ if ($argv[1] === 'create') {
     if (!$seed) {
         throw new RuntimeException('Unable to find the admin and seed board');
     }
+
+    // The board API builds its tree through the current user's visibility
+    // query. Run the fixture with the same administrator identity proven by
+    // the preceding HTTPS login instead of the guest identity SSI defaults to
+    // for a new CLI session.
+    $user_info['id'] = (int) $seed['id_member'];
+    $user_info['username'] = $seed['member_name'];
+    $user_info['name'] = $seed['member_name'];
+    $user_info['email'] = $seed['email_address'];
+    $user_info['groups'] = array(1);
+    $user_info['is_guest'] = false;
+    $user_info['is_admin'] = true;
+    $user_info['can_manage_boards'] = true;
+    $user_info = array_merge($user_info, build_query_board($user_info['id']));
+    $context['user']['id'] = $user_info['id'];
+    $context['user']['is_guest'] = false;
+    $context['user']['is_admin'] = true;
 
     require_once $sourcedir . '/Subs-Boards.php';
     require_once $sourcedir . '/Subs-Post.php';

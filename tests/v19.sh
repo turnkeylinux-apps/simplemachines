@@ -93,7 +93,7 @@ board_name=$(sed -n 's/^board_name=//p' "$tmp/fixture")
 topic_subject=$(sed -n 's/^topic_subject=//p' "$tmp/fixture")
 topic_body=$(sed -n 's/^topic_body=//p' "$tmp/fixture")
 [[ "$board_id" =~ ^[0-9]+$ && "$topic_id" =~ ^[0-9]+$ ]] || \
-    die "fixture did not return board and topic identifiers"
+    { sed -n '1,20p' "$tmp/fixture" >&2; die "fixture did not return board and topic identifiers"; }
 
 require curl "${curl_args[@]}" "$base/index.php?board=$board_id.0" --output "$tmp/board"
 require grep -Fq "$board_name" "$tmp/board"
