@@ -7,3 +7,4 @@ php-curl
 php-mbstring
 
 unzip
+patch

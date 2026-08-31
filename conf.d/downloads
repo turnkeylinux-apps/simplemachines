@@ -1,18 +1,21 @@
 #!/bin/bash -ex
 
-dl() {
-    [[ "$FAB_HTTP_PROXY" ]] && PROXY="--proxy $FAB_HTTP_PROXY"
-    cd $2
-    curl -L -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0' \
-         -f -O $PROXY $1
-    cd -
-}
+VERSION=2.1.7
+ARCHIVE="smf-${VERSION}.tar.gz"
+URL="https://codeload.github.com/SimpleMachines/SMF/tar.gz/refs/tags/v${VERSION}"
+SHA256=2c9c0ea7df803ee03ff7755ea3651c680952e264b7c572439902bb18245c06a3
+SESSION_PATCH=375bcd1
+SESSION_PATCH_SHA256=2641f0fce520d4c2360e40a43498ffa4ce36dceb8fb890503c6073b854b4daec
 
-VERSION=$(gh_releases SimpleMachines/SMF | sort -V \
-            | grep -v alpha | grep -v beta | grep -v rc | tail -1)
-VERSION=${VERSION#v}
-VERSION=${VERSION//./-}
+proxy=()
+[[ "$FAB_HTTP_PROXY" ]] && proxy=(--proxy "$FAB_HTTP_PROXY")
 
-URL="https://download.simplemachines.org/index.php/smf_${VERSION}_install.tar.gz"
+curl --fail --location "${proxy[@]}" \
+    --output "/usr/local/src/$ARCHIVE" "$URL"
+echo "$SHA256  /usr/local/src/$ARCHIVE" | sha256sum --check -
 
-dl $URL /usr/local/src
+curl --fail --location "${proxy[@]}" \
+    --output "/usr/local/src/$SESSION_PATCH.patch" \
+    "https://github.com/SimpleMachines/SMF/commit/$SESSION_PATCH.patch"
+echo "$SESSION_PATCH_SHA256  /usr/local/src/$SESSION_PATCH.patch" | \
+    sha256sum --check -

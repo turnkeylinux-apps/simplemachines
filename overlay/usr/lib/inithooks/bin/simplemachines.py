@@ -79,25 +79,24 @@ def main():
 
     inithooks_cache.write('APP_DOMAIN', domain)
 
-    hash = hashlib.sha1(('admin' + password).encode('utf8')).hexdigest()
+    password_hash = hashlib.sha1(('admin' + password).encode('utf8')).hexdigest()
 
     m = MySQL()
-    m.execute('UPDATE simplemachines.members SET passwd=%s WHERE member_name=\"admin\";', (hash,))
+    m.execute('UPDATE simplemachines.members SET passwd=%s, password_salt=\"\" WHERE member_name=\"admin\";', (password_hash,))
     m.execute('UPDATE simplemachines.members SET email_address=%s WHERE member_name=\"admin\";', (email,))
 
-    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"smileys_url\";', (f"http://{domain}/Smileys"))
-    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"avatar_url\";', (f"http://{domain}/avatars",))
+    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"smileys_url\";', (f"https://{domain}/Smileys",))
+    m.execute('UPDATE simplemachines.settings SET value=%s WHERE variable=\"avatar_url\";', (f"https://{domain}/avatars",))
     
-    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=1;', (f"http://{domain}/Themes/default",))
-    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=1;', (f"http://{domain}/Themes/default/images",))
-    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=2;', (f"http://{domain}/Themes/core",))
-    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=2;', (f"http://{domain}/Themes/core/images",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=1;', (f"https://{domain}/Themes/default",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=1;', (f"https://{domain}/Themes/default/images",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"theme_url\" AND id_theme=2;', (f"https://{domain}/Themes/core",))
+    m.execute('UPDATE simplemachines.themes SET value=%s WHERE variable=\"images_url\" AND id_theme=2;', (f"https://{domain}/Themes/core/images",))
 
     config = "/var/www/simplemachines/Settings.php"
-    subprocess.run(["sed", "-i", f"s|boardurl.*|boardurl = 'http://{domain}';|", config])
-    subprocess.run(["sed", "-i", f"s|webmaster_email.*|webmaster_email = '{domain}';|", config])
+    subprocess.run(["sed", "-i", f"s|boardurl.*|boardurl = 'https://{domain}';|", config], check=True)
+    subprocess.run(["sed", "-i", f"s|webmaster_email.*|webmaster_email = '{email}';|", config], check=True)
 
 
 if __name__ == "__main__":
     main()
-
